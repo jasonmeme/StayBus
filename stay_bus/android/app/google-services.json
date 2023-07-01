@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "316860238361",
+    "project_id": "staybus-7d97c",
+    "storage_bucket": "staybus-7d97c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:316860238361:android:ac728565afa976d2f13888",
+        "android_client_info": {
+          "package_name": "com.example.stay_bus"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "316860238361-d1r08f1m432924gfsmi8u93odpq296f1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBivW73RIw9c3JfIlRStJSx-aT1CNKOTWM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "316860238361-d1r08f1m432924gfsmi8u93odpq296f1.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "316860238361-8hotr3u5k85ogp3ama81j6mm6sjts548.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.stayBus"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
