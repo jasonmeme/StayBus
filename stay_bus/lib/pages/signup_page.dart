@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -14,13 +15,26 @@ class SignUpPage extends StatefulWidget {
 }
 
 class SignUpPageState extends State<SignUpPage> {
+  final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
   String? errorMessage;
 
   bool isLogin = true;
-  final TextEditingController controllerEmail = TextEditingController();
-  final TextEditingController controllerFirstName = TextEditingController();
-  final TextEditingController controllerLastName = TextEditingController();
-  final TextEditingController controllerPassword = TextEditingController();
+  final controllerEmail = TextEditingController();
+  final controllerFirstName = TextEditingController();
+  final controllerLastName = TextEditingController();
+  final controllerPassword = TextEditingController();
+  final bool checkBoxValue = false;
+
+  UserCredential? userCredential;
+
+  @override
+  void dispose() {
+    controllerEmail.dispose();
+    controllerPassword.dispose();
+    controllerFirstName.dispose();
+    controllerLastName.dispose();
+    super.dispose();
+  }
 
   Future<void> createUserWithEmailAndPassword() async {
     showDialog(
@@ -32,10 +46,14 @@ class SignUpPageState extends State<SignUpPage> {
       },
     );
     try {
-      await Auth().createUserWithEmailAndPassword(
+      final UserCredential newCredential =
+          await Auth().createUserWithEmailAndPassword(
         email: controllerEmail.text,
         password: controllerPassword.text,
       );
+      setState(() {
+        userCredential = newCredential;
+      });
       Navigator.pop(context);
     } on FirebaseAuthException catch (e) {
       Navigator.pop(context);
@@ -43,6 +61,24 @@ class SignUpPageState extends State<SignUpPage> {
         errorMessage = e.message;
       });
     }
+
+    if (userCredential != null) {
+      addUserDetails(
+          controllerFirstName.text.trim(),
+          controllerLastName.text.trim(),
+          controllerEmail.text.trim(),
+          checkBoxValue);
+    }
+  }
+
+  Future addUserDetails(
+      String firstName, String lastName, String email, bool driver) async {
+    await FirebaseFirestore.instance.collection('users').add({
+      'first_name': firstName,
+      'last_name': lastName,
+      'email': email,
+      'driver': driver,
+    });
   }
 
   Widget showAlert() {

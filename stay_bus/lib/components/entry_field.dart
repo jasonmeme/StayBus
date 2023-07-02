@@ -26,6 +26,8 @@ class EntryField extends StatelessWidget {
             ),
             focusedBorder:
                 OutlineInputBorder(borderSide: BorderSide(color: Colors.black)),
+            fillColor: Colors.white,
+            filled: true,
             hintText: hintText,
           ),
         ));

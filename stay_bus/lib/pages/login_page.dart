@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:stay_bus/auth.dart';
 import 'package:stay_bus/components/entry_field.dart';
 import 'package:stay_bus/components/button.dart';
+import 'package:stay_bus/pages/forgot_password.dart';
 
 class LogInPage extends StatefulWidget {
   final Function()? onTap;
@@ -193,18 +194,30 @@ class _LogInPageState extends State<LogInPage> {
                     Container(
                       margin: const EdgeInsets.only(top: 10),
                       child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        padding: EdgeInsets.symmetric(horizontal: 20),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.end,
-                          children: const [
-                            Text(
-                              'Forgot Password?',
-                              style: TextStyle(
-                                color: Color(0xFF676767),
-                                fontSize: 12.0,
-                                fontFamily: 'Roboto',
-                                fontStyle: FontStyle.italic,
-                                fontWeight: FontWeight.w300,
+                          children: [
+                            GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) {
+                                      return ForgotPassword();
+                                    },
+                                  ),
+                                );
+                              },
+                              child: const Text(
+                                'Forgot Password?',
+                                style: TextStyle(
+                                  color: Color(0xFF676767),
+                                  fontSize: 12.0,
+                                  fontFamily: 'Roboto',
+                                  fontStyle: FontStyle.italic,
+                                  fontWeight: FontWeight.w300,
+                                ),
                               ),
                             ),
                           ],
