@@ -37,6 +37,8 @@ dependencies:
   lottie: ^2.3.2
   firebase_core: ^2.13.0
   firebase_auth: ^4.6.3
+  google_fonts: ^4.0.0
+
 
 dev_dependencies:
   flutter_test:
@@ -81,6 +83,18 @@ flutter:
       fonts:
         - asset: assets/fonts/Lato-Regular.ttf
         - asset: assets/fonts/Lato-Thin.ttf
+    - family: DM Serif Display
+      fonts:
+        - asset: assets/fonts/DM_Serif_Display_Regular.ttf
+    - family: Roboto
+      fonts:
+        - asset: assets/fonts/Roboto-Regular.ttf
+        - asset: assets/fonts/Roboto-Italic.ttf
+        - asset: assets/fonts/Roboto-Medium.ttf
+        - asset: assets/fonts/Roboto-Light.ttf
+        - asset: assets/fonts/Roboto-ThinItalic.ttf
+        - asset: assets/fonts/Roboto-LightItalic.ttf
+        - asset: assets/fonts/Roboto-Bold.ttf
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:stay_bus/firebase_options.dart';
 import 'package:stay_bus/pages/login_page.dart';
+import 'package:stay_bus/pages/signup_page.dart';
 import 'package:stay_bus/widget_tree.dart';
 import 'package:firebase_core/firebase_core.dart';
 
@@ -20,7 +21,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: WidgetTreePage(),
+      home: SignUpPage(),
     );
   }
 }
