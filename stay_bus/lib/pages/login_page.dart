@@ -212,7 +212,7 @@ class _LogInPageState extends State<LogInPage> {
                       ),
                     ),
                     Container(
-                      margin: const EdgeInsets.only(top: 10),
+                      margin: const EdgeInsets.only(top: 30),
                       child: MyButton(
                         buttonText: "Login",
                         onTap: signInWithEmailAndPassword,
