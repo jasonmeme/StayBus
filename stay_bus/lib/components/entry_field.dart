@@ -17,7 +17,7 @@ class EntryField extends StatelessWidget {
     return Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20),
         child: TextFormField(
-          style: TextStyle(fontSize: 12, height: 0.5, color: Colors.black),
+          style: TextStyle(fontSize: 12, height: 1, color: Colors.black),
           controller: controller,
           obscureText: obscureText,
           decoration: InputDecoration(

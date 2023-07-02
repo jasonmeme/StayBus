@@ -6,14 +6,15 @@ import 'package:stay_bus/components/entry_field.dart';
 import 'package:stay_bus/components/button.dart';
 
 class SignUpPage extends StatefulWidget {
-  SignUpPage({Key? key}) : super(key: key);
+  final Function()? onTap;
+  const SignUpPage({Key? key, required this.onTap}) : super(key: key);
 
   @override
   State<SignUpPage> createState() => SignUpPageState();
 }
 
 class SignUpPageState extends State<SignUpPage> {
-  String? errorMessage = '';
+  String? errorMessage;
 
   bool isLogin = true;
   final TextEditingController controllerEmail = TextEditingController();
@@ -22,19 +23,59 @@ class SignUpPageState extends State<SignUpPage> {
   final TextEditingController controllerPassword = TextEditingController();
 
   Future<void> createUserWithEmailAndPassword() async {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return const Center(
+          child: CircularProgressIndicator(),
+        );
+      },
+    );
     try {
       await Auth().createUserWithEmailAndPassword(
         email: controllerEmail.text,
         password: controllerPassword.text,
       );
+      Navigator.pop(context);
     } on FirebaseAuthException catch (e) {
+      Navigator.pop(context);
       setState(() {
         errorMessage = e.message;
       });
     }
   }
 
-  void signUserUp() {}
+  Widget showAlert() {
+    if (errorMessage != null) {
+      return Container(
+        color: Colors.amberAccent,
+        width: double.infinity,
+        padding: const EdgeInsets.all(8.0),
+        child: Row(
+          children: <Widget>[
+            const Padding(
+              padding: EdgeInsets.only(right: 8.0),
+              child: Icon(Icons.error_outline),
+            ),
+            Expanded(
+              child: Text(errorMessage == '' ? '' : "$errorMessage"),
+            ),
+            IconButton(
+              icon: const Icon(Icons.close),
+              onPressed: () {
+                setState(
+                  () {
+                    errorMessage = null;
+                  },
+                );
+              },
+            ),
+          ],
+        ),
+      );
+    }
+    return const SizedBox(height: 0);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -51,11 +92,13 @@ class SignUpPageState extends State<SignUpPage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
+                    SizedBox(height: 40),
+                    showAlert(),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: <Widget>[
                         Container(
-                          margin: const EdgeInsets.only(top: 40.0, right: 16),
+                          margin: const EdgeInsets.only(top: 20.0, right: 16),
                           child: const Image(
                             image:
                                 AssetImage('assets/images/stay_bus_logo.png'),
@@ -183,7 +226,7 @@ class SignUpPageState extends State<SignUpPage> {
                       margin: const EdgeInsets.only(top: 10),
                       child: MyButton(
                         buttonText: "Sign Up",
-                        onTap: signUserUp,
+                        onTap: createUserWithEmailAndPassword,
                       ),
                     ),
                     Container(
@@ -192,8 +235,8 @@ class SignUpPageState extends State<SignUpPage> {
                         padding: const EdgeInsets.symmetric(horizontal: 20),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
-                          children: const [
-                            Text(
+                          children: [
+                            const Text(
                               'Already have an account?',
                               style: TextStyle(
                                 color: Color(0xFF676767),
@@ -203,13 +246,16 @@ class SignUpPageState extends State<SignUpPage> {
                               ),
                             ),
                             const SizedBox(width: 4),
-                            Text(
-                              'Log In',
-                              style: TextStyle(
-                                color: Colors.blue,
-                                fontSize: 15.0,
-                                fontFamily: 'Roboto',
-                                fontWeight: FontWeight.bold,
+                            GestureDetector(
+                              onTap: widget.onTap,
+                              child: const Text(
+                                'Log In',
+                                style: TextStyle(
+                                  color: Colors.blue,
+                                  fontSize: 15.0,
+                                  fontFamily: 'Roboto',
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
                             ),
                           ],

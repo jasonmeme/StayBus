@@ -6,36 +6,73 @@ import 'package:stay_bus/components/entry_field.dart';
 import 'package:stay_bus/components/button.dart';
 
 class LogInPage extends StatefulWidget {
-  LogInPage({Key? key}) : super(key: key);
+  final Function()? onTap;
+  const LogInPage({Key? key, required this.onTap}) : super(key: key);
 
   @override
   State<LogInPage> createState() => _LogInPageState();
 }
 
 class _LogInPageState extends State<LogInPage> {
-  String? errorMessage = '';
+  String? errorMessage;
   bool isLogin = true;
 
   final controllerEmail = TextEditingController();
   final controllerPassword = TextEditingController();
 
-  void signUserIn() {}
-
   Future<void> signInWithEmailAndPassword() async {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return const Center(
+          child: CircularProgressIndicator(),
+        );
+      },
+    );
     try {
       await Auth().signInWithEmailAndPassword(
         email: controllerEmail.text,
         password: controllerPassword.text,
       );
+      Navigator.pop(context);
     } on FirebaseAuthException catch (e) {
+      Navigator.pop(context);
       setState(() {
         errorMessage = e.message;
       });
     }
   }
 
-  Widget _errorMessage() {
-    return Text(errorMessage == '' ? '' : "Humm ? $errorMessage");
+  Widget showAlert() {
+    if (errorMessage != null) {
+      return Container(
+        color: Colors.amberAccent,
+        width: double.infinity,
+        padding: const EdgeInsets.all(8.0),
+        child: Row(
+          children: <Widget>[
+            const Padding(
+              padding: EdgeInsets.only(right: 8.0),
+              child: Icon(Icons.error_outline),
+            ),
+            Expanded(
+              child: Text(errorMessage == '' ? '' : "$errorMessage"),
+            ),
+            IconButton(
+              icon: const Icon(Icons.close),
+              onPressed: () {
+                setState(
+                  () {
+                    errorMessage = null;
+                  },
+                );
+              },
+            ),
+          ],
+        ),
+      );
+    }
+    return const SizedBox(height: 0);
   }
 
   @override
@@ -53,11 +90,13 @@ class _LogInPageState extends State<LogInPage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
+                    SizedBox(height: 40),
+                    showAlert(),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: <Widget>[
                         Container(
-                          margin: const EdgeInsets.only(top: 40.0, right: 16),
+                          margin: const EdgeInsets.only(top: 20.0, right: 16),
                           child: const Image(
                             image:
                                 AssetImage('assets/images/stay_bus_logo.png'),
@@ -176,7 +215,7 @@ class _LogInPageState extends State<LogInPage> {
                       margin: const EdgeInsets.only(top: 10),
                       child: MyButton(
                         buttonText: "Login",
-                        onTap: signUserIn,
+                        onTap: signInWithEmailAndPassword,
                       ),
                     ),
                     Container(
@@ -185,8 +224,8 @@ class _LogInPageState extends State<LogInPage> {
                         padding: const EdgeInsets.symmetric(horizontal: 20),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
-                          children: const [
-                            Text(
+                          children: [
+                            const Text(
                               'Not a Member?',
                               style: TextStyle(
                                 color: Color(0xFF676767),
@@ -196,13 +235,16 @@ class _LogInPageState extends State<LogInPage> {
                               ),
                             ),
                             const SizedBox(width: 4),
-                            Text(
-                              'Register Now',
-                              style: TextStyle(
-                                color: Colors.blue,
-                                fontSize: 15.0,
-                                fontFamily: 'Roboto',
-                                fontWeight: FontWeight.bold,
+                            GestureDetector(
+                              onTap: widget.onTap,
+                              child: const Text(
+                                'Register Now',
+                                style: TextStyle(
+                                  color: Colors.blue,
+                                  fontSize: 15.0,
+                                  fontFamily: 'Roboto',
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
                             ),
                           ],
