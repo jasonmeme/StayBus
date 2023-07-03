@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
 class GetLocation extends StatelessWidget {
-  const GetLocation({super.key});
+  final String documentId;
+
+  const GetLocation({required this.documentId});
 
   @override
   Widget build(BuildContext context) {

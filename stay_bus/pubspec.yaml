@@ -39,6 +39,8 @@ dependencies:
   firebase_auth: ^4.6.3
   google_fonts: ^4.0.0
   cloud_firestore: ^4.8.2
+  geolocator: ^9.0.2
+  geocoding: ^2.1.0
 
 
 dev_dependencies:
