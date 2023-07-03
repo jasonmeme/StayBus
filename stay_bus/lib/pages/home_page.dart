@@ -1,11 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:stay_bus/auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   HomePage({Key? key}) : super(key: key);
 
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
   final User? user = Auth().currentUser;
+
+  List<String> docIDs = [];
+
+  Future getDocId() async {
+    await FirebaseFirestore.instance.collection('locations').get().then(
+          (snapshot) => snapshot.docs.forEach((element) {
+            docIDs.add(element.reference.id);
+          }),
+        );
+  }
 
   Future<void> signOut() async {
     await Auth().signOut();
@@ -24,6 +40,12 @@ class HomePage extends StatelessWidget {
       onPressed: signOut,
       child: const Text('Sign Out'),
     );
+  }
+
+  @override
+  void initState() {
+    getDocId();
+    super.initState();
   }
 
   @override

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:stay_bus/auth.dart';
 import 'package:stay_bus/login_or_register.dart';
 import 'package:stay_bus/pages/home_page.dart';
-import 'package:stay_bus/pages/login_page.dart';
 
 class WidgetTreePage extends StatefulWidget {
   WidgetTreePage({Key? key}) : super(key: key);
@@ -20,7 +19,7 @@ class WidgetTreeState extends State<WidgetTreePage> {
         if (snapshot.hasData) {
           return HomePage();
         } else {
-          return LoginOrSignup();
+          return const LoginOrSignup();
         }
       },
     );
