@@ -15,6 +15,9 @@ class SignUpPage extends StatefulWidget {
 
 class SignUpPageState extends State<SignUpPage> {
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+
+  final User? user = Auth().currentUser;
+
   String? errorMessage;
 
   bool isLogin = true;
@@ -25,6 +28,7 @@ class SignUpPageState extends State<SignUpPage> {
   final bool checkBoxValue = false;
 
   UserCredential? userCredential;
+  String? userUID;
 
   @override
   void dispose() {
@@ -45,14 +49,17 @@ class SignUpPageState extends State<SignUpPage> {
       },
     );
     try {
-      final UserCredential newCredential =
-          await Auth().createUserWithEmailAndPassword(
-        email: controllerEmail.text,
-        password: controllerPassword.text,
-      );
-      setState(() {
-        userCredential = newCredential;
-      });
+      final Map<String, dynamic>? result = await Auth()
+          .createUserWithEmailAndPassword(
+              controllerEmail.text, controllerPassword.text);
+      if (result != null) {
+        UserCredential newCredential = result['userCredential'];
+        String uid = result['uid'];
+        setState(() {
+          userCredential = newCredential;
+          userUID = uid;
+        });
+      }
       Navigator.pop(context);
     } on FirebaseAuthException catch (e) {
       Navigator.pop(context);
@@ -61,22 +68,29 @@ class SignUpPageState extends State<SignUpPage> {
       });
     }
 
-    if (userCredential != null) {
+    if (userCredential != null && userUID != null) {
+      print(userUID);
       addUserDetails(
-          controllerFirstName.text.trim(),
-          controllerLastName.text.trim(),
-          controllerEmail.text.trim(),
-          checkBoxValue);
+        controllerFirstName.text.trim(),
+        controllerLastName.text.trim(),
+        controllerEmail.text.trim(),
+        checkBoxValue,
+        userUID,
+      );
     }
   }
 
-  Future addUserDetails(
-      String firstName, String lastName, String email, bool driver) async {
-    await FirebaseFirestore.instance.collection('users').add({
+  Future addUserDetails(String firstName, String lastName, String email,
+      bool driver, String? userDocumentID) async {
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(userDocumentID)
+        .set({
       'first_name': firstName,
       'last_name': lastName,
       'email': email,
       'driver': driver,
+      'location': "",
     });
   }
 

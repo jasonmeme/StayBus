@@ -4,6 +4,9 @@
         android:label="stay_bus"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
+        <!-- TODO: Add your Google Maps API key here -->
+        <meta-data android:name="com.google.android.geo.API_KEY"
+               android:value="AIzaSyBVkFRzA6oN1h1pG-HQCl5KF7aNz7ClcCs"/>
         <activity
             android:name=".MainActivity"
             android:exported="true"
