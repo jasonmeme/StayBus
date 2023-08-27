@@ -57,6 +57,8 @@ class _TemplateState extends State<Template> {
       return HomePage(
         onPageChange: _onItemTapped,
       );
+    } else if (index == 1) {
+      return MapPage();
     } else {
       return _pages[index - 1];
     }
